@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+<script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+<script>
+;
+(function($) {
+    $.MyPlugin = function(options) {
+        var defaults = {
+                var1: '',
+                var2: ''
+            },
+            plugin = this,
+            options = options || {};
+
+        plugin.init = function() {
+            var settings = $.extend({}, defaults, options);
+            console.log("init");
+            console.log(settings);
+        }
+        plugin.init();
+    }
+}(jQuery));
+$.MyPlugin({
+    'var1': 'valor1',
+    'var2': 'valor2',
+});
+</script>
+
+</body>
+</html>
