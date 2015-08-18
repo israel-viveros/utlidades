@@ -11,13 +11,13 @@
 <script src="http://myfinalpage.esmas.com/react/react.js"></script>
 <script src="http://myfinalpage.esmas.com/react/JSXTransformer.js"></script>
 
-<script type="text/jsx">
-	var Hola = React.createClass({
-		render: function(){
-			return <div className="hola">{this.props.jj}</div>;
+<script type="text/jsx;harmony=true">
+	class Hola extends React.Component{
+		render(){
+			return <div className="hola">{this.props.numero1}</div>;
 		}
-	});
-	React.render(<Hola jj="israel" />, document.getElementsByClassName('container')[0]);
+	};
+	React.render(<Hola numero1="1" />, document.getElementsByClassName('container')[0]);
 </script>
 
 </body>
