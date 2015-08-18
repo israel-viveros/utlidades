@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script src="http://myfinalpage.esmas.com/react/react.js"></script>
+<script src="http://myfinalpage.esmas.com/react/JSXTransformer.js"></script>
+
+<script type="text/jsx">
+	var Hola = React.createClass({
+		render: function(){
+			return <div className="hola">{this.props.jj}</div>;
+		}
+	});
+	React.render(<Hola jj="israel" />, document.getElementsByClassName('container')[0]);
+</script>
+
+</body>
+</html>
