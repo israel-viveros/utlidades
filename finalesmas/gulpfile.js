@@ -1,11 +1,6 @@
-/* OPCIONES DE COMPILACION Y GENERACION DE LOS ASSETS DE INTERACES Y PROYECTOS */
-//  gulp 					   NO HACE NADA
-//  gulp --i 'interfas' --'project name'   						COMPILA INTERFACE (normal)
-//  gulp --c OPCION(--i o --p) 'interfas' --'project name'   	COMPILA COMPRIMIENDO INTERFACE O PROYECTO
-//  gulp --p 'interfas' --'project name'   						COMPILA PROYECTO
-//
-//  AL COMPILAR LA INTERFACE Y EL PROYECTO, GENERA EL AUTOMATICAMENTE EL CODE FREEZE
-//
+//  gulp --i 'interfas' --'project name'                        COMPILA INTERFACE (normal)
+//  gulp --c OPCION(--i o --p) 'interfas' --'project name'      COMPILA COMPRIMIENDO INTERFACE O PROYECTO
+//  gulp --p 'interfas' --'project name'                        COMPILA PROYECTO
 
 'use strict';
 
@@ -178,7 +173,11 @@ gulp.task('js_jsx_merge', function() {
       var name = path.basename(file.path),
         files = ['interface/' + interfas + '/assets/js/' + name.replace(/\//g, '') + '-functions.js', 'interface/' + interfas + '/assets/js/' + name.replace(/\//g, '') + '-jsx.js'];
       return gulp.src(files)
-        .pipe(concat(name + '-functions.js'))
+        .pipe(concat('functions.js'))
+        .pipe(rename({
+          dirname: '',
+          prefix: name + '-'
+        }))
         .pipe(gulp.dest('interface/' + interfas + '/assets/js'))
         .pipe(gulpif(dist, gulp.dest('project/' + interfas + '/' + project + '/dist/assets/js/')))
     }));
@@ -186,20 +185,32 @@ gulp.task('js_jsx_merge', function() {
 
 
 gulp.task('delete_js_jsx', function() {
-  var regexp = /-functions-primitive|-jsx/g;
+  var regexp = /.+-functions-primitive.js|.+-jsx.js/g;
   gulp.src(['interface/' + interfas + '/assets/js/*.js'])
     .pipe(deletefile({
       reg: regexp,
-      deleteMatch: true
+      deleteMatch: true,
+      console: false
+    }));
+});
+
+gulp.task('clean_js', function() {
+  var regexp = /.+js/g;
+  gulp.src(['interface/' + interfas + '/assets/js/*.js'])
+    .pipe(deletefile({
+      reg: regexp,
+      deleteMatch: true,
+      console: false
     }));
 });
 
 gulp.task('delete_js_skeleton', function() {
-  var regexp = /skeleton.*/g;
+  var regexp = /skeleton.+/g;
   gulp.src(['interface/' + interfas + '/assets/js/*.js'])
     .pipe(deletefile({
       reg: regexp,
-      deleteMatch: true
+      deleteMatch: true,
+      console: false
     }));
 });
 
@@ -215,7 +226,7 @@ gulp.task('js_project_global', function() {
       .pipe(insert.prepend(huella))
       .pipe(gulpif(!dist, gulp.dest('interface/' + interfas + '/assets/js')))
       .pipe(gulpif(dist, gulp.dest('project/' + interfas + '/' + project + '/dist/assets/js')))
-    }, 1000)
+    }, 2000)
 });
 
 gulp.task('php_project', function() {
@@ -299,7 +310,7 @@ gulp.task('lasttak', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('./interface/' + interfas + '/components/*/*.*', gulpsync.sync(['js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'js_project_global']));
+  gulp.watch('./interface/' + interfas + '/components/*/*.*', gulpsync.sync(['clean_js','js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'js_project_global']));
   gulp.watch('./interface/' + interfas + '/sass/skeleton.scss', ['css_global_interface']);
   gulp.watch('./interface/' + interfas + '/sass/theme.scss', ['css_default_interface']);
   gulp.watch('./interface/' + interfas + '/components/*/colors.scss', ['css_default_interface']);
@@ -311,11 +322,8 @@ if (project.indexOf('--') == -1) {
 } else {
   console.log("ERROR, NO EXISTE EL PROYECTO O INTERFASE INDICADA");
 }
-// , 'css_component_interface'
-// gulp.task('interface', ['css_global_interface', 'css_default_interface', 'css_component_interface', 'js_project_global', 'js_components_interface', 'copyfonts', 'copyimages', 'copyimages_project', 'watch']);
-gulp.task('interface', gulpsync.sync(['css_global_interface', 'css_default_interface', 'css_component_interface', 'js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'copyfonts', 'copyimages', 'copyimages_project', 'js_project_global', 'watch']));
+gulp.task('interface', gulpsync.sync(['clean_js','css_global_interface', 'css_default_interface', 'css_component_interface', 'js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge','delete_js_jsx', 'delete_js_skeleton', 'copyfonts', 'copyimages', 'copyimages_project', 'js_project_global', 'watch']));
 
 gulp.task('project', ['css_project_theme']);
 
-// gulp.task('distribucion', ['css_global_interface', 'js_project_global', 'css_project_theme', 'php_project', 'copyfonts_dist', 'copyimages_dist', 'copyimages_project_dist', 'copyskeleton_css', 'copyskeleton_js', 'copytheme', 'css_component_interface', 'js_components_interface', 'lasttak']);
-gulp.task('distribucion', gulpsync.sync(['css_global_interface', 'js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'css_project_theme', 'php_project', 'js_project_global', 'copyfonts_dist', 'copyimages_dist', 'copyimages_project_dist', 'copyskeleton_css', 'copyskeleton_js', 'copytheme', 'css_component_interface', 'lasttak']));
+gulp.task('distribucion', gulpsync.sync(['clean_js','css_global_interface', 'js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'css_project_theme', 'php_project', 'js_project_global', 'copyfonts_dist', 'copyimages_dist', 'copyimages_project_dist', 'copyskeleton_css', 'copyskeleton_js', 'copytheme', 'css_component_interface', 'lasttak']));
