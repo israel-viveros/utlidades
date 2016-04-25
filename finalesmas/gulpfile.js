@@ -174,6 +174,7 @@ gulp.task('js_jsx_merge', function() {
         files = ['interface/' + interfas + '/assets/js/' + name.replace(/\//g, '') + '-functions.js', 'interface/' + interfas + '/assets/js/' + name.replace(/\//g, '') + '-jsx.js'];
       return gulp.src(files)
         .pipe(concat('functions.js'))
+        .pipe(gulpif(compress, uglify()))
         .pipe(rename({
           dirname: '',
           prefix: name + '-'
@@ -216,7 +217,7 @@ gulp.task('delete_js_skeleton', function() {
 
 // COMPILA CSS THEME DEL PROYECTO
 gulp.task('js_project_global', function() {
-    setTimeout(function(){
+  setTimeout(function() {
     return gulp.src('interface/' + interfas + '/assets/js/*.js')
       .pipe(gulpif(compress, uglify()))
       .pipe(concat('skeleton.' + interfas.replace("ui-", "") + '.js'))
@@ -226,7 +227,7 @@ gulp.task('js_project_global', function() {
       .pipe(insert.prepend(huella))
       .pipe(gulpif(!dist, gulp.dest('interface/' + interfas + '/assets/js')))
       .pipe(gulpif(dist, gulp.dest('project/' + interfas + '/' + project + '/dist/assets/js')))
-    }, 2000)
+  }, 2000)
 });
 
 gulp.task('php_project', function() {
@@ -310,7 +311,7 @@ gulp.task('lasttak', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('./interface/' + interfas + '/components/*/*.*', gulpsync.sync(['clean_js','js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'js_project_global']));
+  gulp.watch('./interface/' + interfas + '/components/*/*.*', gulpsync.sync(['clean_js', 'js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'js_project_global']));
   gulp.watch('./interface/' + interfas + '/sass/skeleton.scss', ['css_global_interface']);
   gulp.watch('./interface/' + interfas + '/sass/theme.scss', ['css_default_interface']);
   gulp.watch('./interface/' + interfas + '/components/*/colors.scss', ['css_default_interface']);
@@ -322,8 +323,8 @@ if (project.indexOf('--') == -1) {
 } else {
   console.log("ERROR, NO EXISTE EL PROYECTO O INTERFASE INDICADA");
 }
-gulp.task('interface', gulpsync.sync(['clean_js','css_global_interface', 'css_default_interface', 'css_component_interface', 'js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge','delete_js_jsx', 'delete_js_skeleton', 'copyfonts', 'copyimages', 'copyimages_project', 'js_project_global', 'watch']));
+gulp.task('interface', gulpsync.sync(['clean_js', 'css_global_interface', 'css_default_interface', 'css_component_interface', 'js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'copyfonts', 'copyimages', 'copyimages_project', 'js_project_global', 'watch']));
 
 gulp.task('project', ['css_project_theme']);
 
-gulp.task('distribucion', gulpsync.sync(['clean_js','css_global_interface', 'js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'css_project_theme', 'php_project', 'js_project_global', 'copyfonts_dist', 'copyimages_dist', 'copyimages_project_dist', 'copyskeleton_css', 'copyskeleton_js', 'copytheme', 'css_component_interface', 'lasttak']));
+gulp.task('distribucion', gulpsync.sync(['clean_js', 'css_global_interface', 'js_components_interface', 'js_components_interface_jsx', 'js_jsx_merge', 'delete_js_jsx', 'delete_js_skeleton', 'css_project_theme', 'php_project', 'js_project_global', 'copyfonts_dist', 'copyimages_dist', 'copyimages_project_dist', 'copyskeleton_css', 'copyskeleton_js', 'copytheme', 'css_component_interface', 'lasttak']));
