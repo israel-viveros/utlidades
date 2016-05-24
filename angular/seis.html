@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div ng-app="" ng-init="data={primero:'valor1', segundo: 'valor2'}">
+        <p>el valor: {{ data.primero }}</p>
+        <p>el valor: {{ data.segundos || 'hola' }}</p>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div ng-app="aplicacion" ng-controller="controlador">
+        <p>{{ dato1 }}</p>
+        <p>{{ dato2 }}</p>
+    </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script>
+        var app = angular.module('aplicacion', []);
+        app.controller('controlador', function($scope){
+            $scope.dato1 = 'Valor numero 1';
+            $scope.dato2 = 'valor 2';
+        });
+    </script>
+
+
+</body>
+</html>
