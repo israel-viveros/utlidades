@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body ng-app="myApp">
+
+
+    <ul class="parent" ng-controller="repeatController">
+
+        <li ng-repeat="alumno in alumnos">
+            El nombre es: {{alumno.firstName}} y el apellido es: {{alumno.lastName}}
+        </li>
+
+            <li>Nombre: <input type="text" ng-model="nuevo.firstName"></li>
+            <li>Nombre: <input type="text" ng-model="nuevo.lastName"></li>
+            <li><button ng-click="save(nuevo)">Agregar</button></li>
+
+    </ul>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script>
+
+        var app  = angular.module('myApp', []);
+        app.controller('repeatController', function($scope){
+            $scope.alumnos = [
+                        {
+                            "firstName": "John",
+                            "lastName": "Doe"
+                        },
+                        {
+                            "firstName": "Anna",
+                            "lastName": "Smith"
+                        },
+                        {
+                            "firstName": "Peter",
+                            "lastName": "Jones"
+                        }
+                    ];
+                $scope.save = function(data){
+                $scope.alumnos.push(data);
+                }
+
+        });
+    </script>
+</body>
+</html>
