@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script>
+  var app = angular.module("myApp", []);
+  app.controller('MiControlador', function($scope){
+    $scope.nuevoComentario = {};
+    $scope.comentarios = [
+        {
+          comentario: "es un comentario 1",
+          usuario: "usuario 1"
+        },
+        {
+          comentario: "es un comentario 2",
+          usuario: "usuario 2"
+        },
+        {
+          comentario: "es un comentario 3",
+          usuario: "usuario 3"
+        }
+    ];
+    $scope.agregarComentario = function(){
+      var nuevo =  {
+         	comentario: $scope.nuevoComentario.usuario,
+         	usuario: $scope.nuevoComentario.comentario
+        };
+        $scope.comentarios.push(nuevo);
+        $scope.nuevoComentario = {};
+    }
+  });
+  </script>
+</head>
+<body ng-controller="MiControlador">
+  <input type="text" ng-model="nuevoComentario.usuario">
+  <input type="text" ng-model="nuevoComentario.comentario">
+  <button type="button" name="button" ng-click="agregarComentario()">Agregar comentario</button>
+  <ul>
+    <li ng-repeat="comentario in comentarios">
+        {{comentario.comentario}} - <b>{{comentario.usuario}}</b>
+    </li>
+  </ul>
+</body>
+</html>
