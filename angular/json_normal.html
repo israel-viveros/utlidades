@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function($scope, $http){
+      $scope.data = [];
+      $scope.nuevoPost = {};
+      $http.get('http://jsonplaceholder.typicode.com/posts')
+        .success(function(data){
+          $scope.data = data;
+        })
+        .error(function(err){
+          console.log(err);
+        });
+
+        $scope.addPost = function(){
+          console.log("click");
+          var insertData = {
+            title: $scope.nuevoPost.title,
+            body: $scope.nuevoPost.body,
+            userId: 1
+          };
+          console.log(insertData);
+          $http.post('http://jsonplaceholder.typicode.com/posts', insertData)
+          .success(function(data, status){
+              $scope.data.push(insertData);
+              $scope.nuevoPost = {};
+          })
+          .error(function(err){
+            console.log(err);
+          });
+        }
+    });
+
+  </script>
+</head>
+<body ng-controller="myController">
+  <input type="text" ng-model="nuevoPost.title">
+  <textarea name="name" rows="8" cols="40" ng-model="nuevoPost.body"></textarea>
+  <button ng-click="addPost()">Agregar nuevo post</button>
+  <ul>
+    <li ng-repeat="dato in data">
+      <h1>{{dato.title}}</h1>
+      <p>{{dato.body}}</p>
+      <hr>
+    </li>
+  </ul>
+</body>
+</html>

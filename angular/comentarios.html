@@ -6,7 +6,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
   <script>
   var app = angular.module("myApp", []);
-  app.controller('MiControlador', function($scope){
+  app.controller('MiControlador',['$scope', function($scope){
     $scope.nuevoComentario = {};
     $scope.comentarios = [
         {
@@ -30,7 +30,7 @@
         $scope.comentarios.push(nuevo);
         $scope.nuevoComentario = {};
     }
-  });
+  }]);
   </script>
 </head>
 <body ng-controller="MiControlador">

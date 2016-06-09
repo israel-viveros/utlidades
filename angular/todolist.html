@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="todo">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script src="angular-local-storage.min.js"></script>
+  <script>
+  // https://github.com/grevory/angular-local-storage
+  //
+  var AppTodo = angular.module('todo', ['LocalStorageModule']);
+      AppTodo.controller('todoController', function($scope, localStorageService){
+
+        if(localStorageService.get('todo')){
+          $scope.todo = localStorageService.get('todo');
+        }else{
+          $scope.todo = [];
+        }
+
+        $scope.nuevaTarea = {};
+
+        $scope.addTarea = function(){
+          $scope.todo.push({
+            descripcion: $scope.nuevaTarea.descripcion,
+            fecha: $scope.nuevaTarea.fecha
+          });
+          localStorageService.set('todo', $scope.todo);
+          $scope.nuevaTarea = {};
+        }
+
+        $scope.clean = function(){
+          $scope.todo = {};
+          localStorageService.remove('todo');
+        }
+
+      });
+  </script>
+</head>
+<body ng-controller="todoController">
+
+  <ul>
+    <li ng-repeat="tarea in todo">
+      {{tarea.descripcion}} - {{tarea.fecha}}
+    </li>
+  </ul>
+
+  <form action="#" ng-submit="addTarea()">
+    <input type="text" ng-model="nuevaTarea.descripcion">
+    <input type="date" ng-model="nuevaTarea.fecha ">
+    <input type="submit" value="agregar Tarea">
+  </form>
+  <button ng-click="clean()">Limpiar</button>
+
+</body>
+</html>
